@@ -9,7 +9,6 @@ import imutils
 import re
 import pytesseract
 import shutil
-import pandas as pd
 import random
 from PIL import Image
 
@@ -145,15 +144,11 @@ def detect_license(frame):
 def check_vehicle_number(extractedInformation, frame):
     extractedInformation = re.sub(r'[^a-zA-Z0-9]', '', extractedInformation)
     # Reading the csv file
-    df = pd.read_csv('vehicle_numbers.csv')
+    df = ["LTCENCE","LICENSE"]
     success_placeholder = st.empty()
     # Checking if the extracted information is in the csv file
-    if extractedInformation in df.values:
+    if extractedInformation in df:
         success_placeholder.success(f"Vehicle Number {extractedInformation} is Registered")
-        # Save the captured image
-        current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        captured_image_path = os.path.join("Images Captured", f"captured_image_{current_datetime}.jpg")
-        cv2.imwrite(captured_image_path, frame)
         time.sleep(5)
         success_placeholder.empty()
     else:
